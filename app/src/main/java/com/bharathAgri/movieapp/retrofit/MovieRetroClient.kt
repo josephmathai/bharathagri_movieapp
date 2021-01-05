@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit
 const val API_KEY = "49f9d11eb57b0dfb0bea2672cbbf6258"
 const val BASE_URL = "https://api.themoviedb.org/3/"
 
+const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w342"
+
 object MovieRetroClient {
 
     fun getClient(): MovieRetroInterface {
