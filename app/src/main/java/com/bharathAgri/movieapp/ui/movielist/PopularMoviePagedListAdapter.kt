@@ -24,7 +24,6 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
 
     private var networkState: NetworkState? = null
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view: View
@@ -47,7 +46,6 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
         }
     }
 
-
     private fun hasExtraRow(): Boolean {
         return networkState != null && networkState != NetworkState.LOADED
     }
@@ -64,9 +62,6 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
         }
     }
 
-
-
-
     class MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.id == newItem.id
@@ -75,9 +70,7 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem == newItem
         }
-
     }
-
 
     class MovieItemViewHolder (view: View) : RecyclerView.ViewHolder(view) {
 
@@ -117,7 +110,6 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
         }
     }
 
-
     fun setNetworkState(newNetworkState: NetworkState) {
         val previousState = this.networkState
         val hadExtraRow = hasExtraRow()
@@ -133,7 +125,5 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
         } else if (hasExtraRow && previousState != newNetworkState) {
             notifyItemChanged(itemCount - 1)
         }
-
     }
-
 }

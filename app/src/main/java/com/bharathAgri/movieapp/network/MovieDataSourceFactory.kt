@@ -6,13 +6,13 @@ import com.bharathAgri.movieapp.model.Movie
 import com.bharathAgri.movieapp.retrofit.MovieRetroInterface
 import io.reactivex.disposables.CompositeDisposable
 
-class MovieDataSourceFactory (private val apiService : MovieRetroInterface, private val compositeDisposable: CompositeDisposable)
+class MovieDataSourceFactory (private val apiService : MovieRetroInterface, private val  type: String, private val compositeDisposable: CompositeDisposable)
     : DataSource.Factory<Int, Movie>() {
 
     val moviesLiveDataSource =  MutableLiveData<MovieDataSource>()
 
     override fun create(): DataSource<Int, Movie> {
-        val movieDataSource = MovieDataSource(apiService, compositeDisposable)
+        val movieDataSource = MovieDataSource(apiService, type, compositeDisposable)
 
         moviesLiveDataSource.postValue(movieDataSource)
 

@@ -7,12 +7,12 @@ import com.bharathAgri.movieapp.model.Movie
 import com.bharathAgri.movieapp.network.NetworkState
 import io.reactivex.disposables.CompositeDisposable
 
-class MainActivityViewModel(private val movieRepository : MoviePagedListRepository) : ViewModel() {
+class MainActivityLatestViewModel (private val movieRepository : MoviePagedListRepository) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    val  moviePagedList : LiveData<PagedList<Movie>> by lazy {
-        movieRepository.fetchLiveMoviePagedList(compositeDisposable)
+    val  movieLatestList : LiveData<PagedList<Movie>> by lazy {
+        movieRepository.fetchLiveLatestMoviePagedList(compositeDisposable)
     }
 
     val  networkState : LiveData<NetworkState> by lazy {
@@ -20,7 +20,7 @@ class MainActivityViewModel(private val movieRepository : MoviePagedListReposito
     }
 
     fun listIsEmpty(): Boolean {
-        return moviePagedList.value?.isEmpty() ?: true
+        return movieLatestList.value?.isEmpty() ?: true
     }
 
 

@@ -2,6 +2,8 @@ package com.bharathAgri.movieapp.ui.movielist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -16,7 +18,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var viewModelPopular: MainActivityPopularViewModel
+    private lateinit var viewModelLatest: MainActivityLatestViewModel
+    private lateinit var viewModelRating: MainActivityRatingViewModel
 
     lateinit var movieRepository: MoviePagedListRepository
 
@@ -24,11 +28,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initializedata("popular")
+
+    }
+
+
+    fun initializedata(type: String) {
         val apiService : MovieRetroInterface = MovieRetroClient.getClient()
 
-        movieRepository = MoviePagedListRepository(apiService)
+        movieRepository = MoviePagedListRepository(apiService, type)
 
-        viewModel = getViewModel()
+
 
         val movieAdapter = PopularMoviePagedListAdapter(this)
 
@@ -47,27 +57,102 @@ class MainActivity : AppCompatActivity() {
         movie_list.setHasFixedSize(true)
         movie_list.adapter = movieAdapter
 
-        viewModel.moviePagedList.observe(this, Observer {
-            movieAdapter.submitList(it)
-        })
 
-        viewModel.networkState.observe(this, Observer {
-            progressbar_main.visibility = if (viewModel.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
-            txt_error_main.visibility = if (viewModel.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
+        if (type.equals("popular")) {
+            viewModelPopular = getViewModel()
+            viewModelPopular.moviePagedList.observe(this, Observer {
+                movieAdapter.submitList(it)
+            })
 
-            if (!viewModel.listIsEmpty()) {
-                movieAdapter.setNetworkState(it)
-            }
-        })
+            viewModelPopular.networkState.observe(this, Observer {
+                progressbar_main.visibility = if (viewModelPopular.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
+                txt_error_main.visibility = if (viewModelPopular.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+                if (!viewModelPopular.listIsEmpty()) {
+                    movieAdapter.setNetworkState(it)
+                }
+            })
+        } else if(type.equals("latest")) {
+            viewModelLatest = getLatestViewModel()
+            viewModelLatest.movieLatestList.observe(this, Observer {
+                movieAdapter.submitList(it)
+            })
+
+            viewModelLatest.networkState.observe(this, Observer {
+                progressbar_main.visibility = if (viewModelLatest.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
+                txt_error_main.visibility = if (viewModelLatest.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+                if (!viewModelLatest.listIsEmpty()) {
+                    movieAdapter.setNetworkState(it)
+                }
+            })
+        } else if (type.equals("rating")) {
+            viewModelRating = getRatingViewModel()
+            viewModelRating.movieRatedList.observe(this, Observer {
+                movieAdapter.submitList(it)
+            })
+
+            viewModelRating.networkState.observe(this, Observer {
+                progressbar_main.visibility = if (viewModelRating.listIsEmpty() && it == NetworkState.LOADING) View.VISIBLE else View.GONE
+                txt_error_main.visibility = if (viewModelRating.listIsEmpty() && it == NetworkState.ERROR) View.VISIBLE else View.GONE
+
+                if (!viewModelRating.listIsEmpty()) {
+                    movieAdapter.setNetworkState(it)
+                }
+            })
+
+        }
+
+
+
     }
-
-
-    private fun getViewModel(): MainActivityViewModel {
+    private fun getViewModel(): MainActivityPopularViewModel {
         return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 @Suppress("UNCHECKED_CAST")
-                return MainActivityViewModel(movieRepository) as T
+                return MainActivityPopularViewModel(movieRepository) as T
             }
-        })[MainActivityViewModel::class.java]
+        })[MainActivityPopularViewModel::class.java]
+    }
+
+    private fun getLatestViewModel(): MainActivityLatestViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return MainActivityLatestViewModel(movieRepository) as T
+            }
+        })[MainActivityLatestViewModel::class.java]
+    }
+
+    private fun getRatingViewModel(): MainActivityRatingViewModel {
+        return ViewModelProviders.of(this, object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return MainActivityRatingViewModel(movieRepository) as T
+            }
+        })[MainActivityRatingViewModel::class.java]
+    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_popular -> {
+               initializedata("popular")
+                true
+            }
+            R.id.action_latest ->{
+               initializedata("latest")
+                return true
+            }
+            R.id.action_rating ->{
+                initializedata("rating")
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

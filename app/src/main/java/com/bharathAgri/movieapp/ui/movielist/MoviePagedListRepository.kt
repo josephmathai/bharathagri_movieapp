@@ -11,13 +11,15 @@ import com.bharathAgri.movieapp.network.NetworkState
 import com.bharathAgri.movieapp.retrofit.MovieRetroInterface
 import io.reactivex.disposables.CompositeDisposable
 
-class MoviePagedListRepository (private val apiService : MovieRetroInterface) {
+class MoviePagedListRepository (private val apiService : MovieRetroInterface, private val  type: String) {
 
     lateinit var moviePagedList: LiveData<PagedList<Movie>>
+    lateinit var movieLatestList: LiveData<PagedList<Movie>>
+    lateinit var movieratedList: LiveData<PagedList<Movie>>
     lateinit var moviesDataSourceFactory: MovieDataSourceFactory
 
     fun fetchLiveMoviePagedList (compositeDisposable: CompositeDisposable) : LiveData<PagedList<Movie>> {
-        moviesDataSourceFactory = MovieDataSourceFactory(apiService, compositeDisposable)
+        moviesDataSourceFactory = MovieDataSourceFactory(apiService, type, compositeDisposable)
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -28,6 +30,33 @@ class MoviePagedListRepository (private val apiService : MovieRetroInterface) {
 
         return moviePagedList
     }
+
+    fun fetchLiveLatestMoviePagedList (compositeDisposable: CompositeDisposable) : LiveData<PagedList<Movie>> {
+        moviesDataSourceFactory = MovieDataSourceFactory(apiService, type, compositeDisposable)
+
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(20)
+            .build()
+
+        movieLatestList = LivePagedListBuilder(moviesDataSourceFactory, config).build()
+
+        return movieLatestList
+    }
+
+    fun fetchLiveratedMoviePagedList (compositeDisposable: CompositeDisposable) : LiveData<PagedList<Movie>> {
+        moviesDataSourceFactory = MovieDataSourceFactory(apiService, type, compositeDisposable)
+
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(20)
+            .build()
+
+        movieratedList = LivePagedListBuilder(moviesDataSourceFactory, config).build()
+
+        return movieratedList
+    }
+
 
     fun getNetworkState(): LiveData<NetworkState> {
         return Transformations.switchMap<MovieDataSource, NetworkState>(
