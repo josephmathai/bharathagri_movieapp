@@ -1,6 +1,7 @@
 package com.bharathAgri.movieapp.ui.movielist
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.bharathAgri.movieapp.R
 import com.bharathAgri.movieapp.model.Movie
 import com.bharathAgri.movieapp.network.NetworkState
 import com.bharathAgri.movieapp.retrofit.IMAGE_BASE_URL
+import com.bharathAgri.movieapp.ui.movieDetails.MovieDetailActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.list_item.view.*
 
@@ -85,6 +87,9 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
                 .into(itemView.image_movie_poster)
 
             itemView.setOnClickListener{
+                val intent = Intent(context, MovieDetailActivity::class.java)
+                intent.putExtra("id", movie?.id)
+                context.startActivity(intent)
                 Toast.makeText(context, "Clicked " +movie?.title, Toast.LENGTH_LONG).show()
             }
         }

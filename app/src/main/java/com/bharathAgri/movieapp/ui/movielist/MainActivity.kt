@@ -16,6 +16,7 @@ import com.bharathAgri.movieapp.retrofit.MovieRetroClient
 import com.bharathAgri.movieapp.retrofit.MovieRetroInterface
 import kotlinx.android.synthetic.main.activity_main.*
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModelPopular: MainActivityPopularViewModel

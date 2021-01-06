@@ -11,11 +11,11 @@
     <item
         android:id="@+id/action_rating"
         android:orderInCategory="101"
-        android:title="Rating"/>
+        android:title="Top Rated"/>
     <item
         android:id="@+id/action_latest"
         android:orderInCategory="102"
-        android:title="Latest"/>
+        android:title="Now Playing"/>
 
 
 </menu>
