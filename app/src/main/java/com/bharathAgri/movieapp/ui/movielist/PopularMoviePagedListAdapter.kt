@@ -77,6 +77,7 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
         fun bind(movie: Movie?,context: Context) {
             itemView.movie_title.text = movie?.title
             itemView.movie_release_date.text =  movie?.release_date
+            itemView.movie_rating.text = movie?.vote_average.toString()
 
             val moviePosterURL = IMAGE_BASE_URL + movie?.poster_path
             Glide.with(itemView.context)
