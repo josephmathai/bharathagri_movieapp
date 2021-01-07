@@ -1,5 +1,6 @@
 package com.bharathAgri.movieapp.ui.movielist
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
@@ -11,7 +12,7 @@ import com.bharathAgri.movieapp.network.NetworkState
 import com.bharathAgri.movieapp.retrofit.MovieRetroInterface
 import io.reactivex.disposables.CompositeDisposable
 
-class MoviePagedListRepository (private val apiService : MovieRetroInterface, private val  type: String) {
+class MoviePagedListRepository (private val apiService : MovieRetroInterface, private val context: Context, private val  type: String) {
 
     lateinit var moviePagedList: LiveData<PagedList<Movie>>
     lateinit var movieLatestList: LiveData<PagedList<Movie>>
@@ -19,7 +20,7 @@ class MoviePagedListRepository (private val apiService : MovieRetroInterface, pr
     lateinit var moviesDataSourceFactory: MovieDataSourceFactory
 
     fun fetchLiveMoviePagedList (compositeDisposable: CompositeDisposable) : LiveData<PagedList<Movie>> {
-        moviesDataSourceFactory = MovieDataSourceFactory(apiService, type, compositeDisposable)
+        moviesDataSourceFactory = MovieDataSourceFactory(apiService, context, type, compositeDisposable)
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -32,7 +33,7 @@ class MoviePagedListRepository (private val apiService : MovieRetroInterface, pr
     }
 
     fun fetchLiveLatestMoviePagedList (compositeDisposable: CompositeDisposable) : LiveData<PagedList<Movie>> {
-        moviesDataSourceFactory = MovieDataSourceFactory(apiService, type, compositeDisposable)
+        moviesDataSourceFactory = MovieDataSourceFactory(apiService, context, type, compositeDisposable)
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -45,7 +46,7 @@ class MoviePagedListRepository (private val apiService : MovieRetroInterface, pr
     }
 
     fun fetchLiveratedMoviePagedList (compositeDisposable: CompositeDisposable) : LiveData<PagedList<Movie>> {
-        moviesDataSourceFactory = MovieDataSourceFactory(apiService, type, compositeDisposable)
+        moviesDataSourceFactory = MovieDataSourceFactory(apiService,context, type, compositeDisposable)
 
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)

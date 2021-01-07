@@ -1,14 +1,16 @@
 package com.bharathAgri.movieapp.network
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.bharathAgri.movieapp.database.DatabaseClient
 import com.bharathAgri.movieapp.model.Movie
 import com.bharathAgri.movieapp.retrofit.MovieRetroInterface
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class MovieDataSource(private val apiService : MovieRetroInterface, private val type: String, private val compositeDisposable: CompositeDisposable): PageKeyedDataSource<Int, Movie>(){
+class MovieDataSource(private val apiService : MovieRetroInterface, private  val context: Context, private val type: String, private val compositeDisposable: CompositeDisposable): PageKeyedDataSource<Int, Movie>(){
 
     private var page = 1
 
@@ -78,6 +80,9 @@ class MovieDataSource(private val apiService : MovieRetroInterface, private val 
                     .subscribe(
                         {
                             if(it.totalPages >= params.key) {
+                                DatabaseClient.getInstance(context).getAppDatabase()
+                                    .movieDao()
+                                    .insertall(it.movieList)
                                 callback.onResult(it.movieList, params.key+1)
                                 networkState.postValue(NetworkState.LOADED)
                             }

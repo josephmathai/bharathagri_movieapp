@@ -15,13 +15,6 @@ class MainActivityPopularViewModel(private val movieRepository : MoviePagedListR
         movieRepository.fetchLiveMoviePagedList(compositeDisposable)
     }
 
-    val  movieLatestList : LiveData<PagedList<Movie>> by lazy {
-        movieRepository.fetchLiveLatestMoviePagedList(compositeDisposable)
-    }
-
-    val  movieRatedList : LiveData<PagedList<Movie>> by lazy {
-        movieRepository.fetchLiveratedMoviePagedList(compositeDisposable)
-    }
     val  networkState : LiveData<NetworkState> by lazy {
         movieRepository.getNetworkState()
     }

@@ -6,10 +6,12 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.TypeConverter;
 import androidx.room.Update;
 
 import com.bharathAgri.movieapp.model.Movie;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,5 +32,12 @@ public interface MovieDao {
     void update(Movie task);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertall(@Nullable PagedList<Movie> it);
+    void insertall(@NotNull List<Movie> movieList);
+}
+
+class RoomConverterNullString {
+    @TypeConverter
+    public static String fromNullToString(String value) {
+        return (value == null) ? "" : value;
+    }
 }

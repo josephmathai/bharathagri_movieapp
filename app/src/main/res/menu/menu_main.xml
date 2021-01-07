@@ -17,5 +17,9 @@
         android:orderInCategory="102"
         android:title="Now Playing"/>
 
+    <item
+        android:id="@+id/action_offline"
+        android:orderInCategory="102"
+        android:title="Offline"/>
 
 </menu>
