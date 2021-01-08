@@ -173,25 +173,4 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    class UiThreadExecutor: Executor {
-        private val handler = Handler (Looper.getMainLooper ())
-        override fun execute (command: Runnable) {
-            handler.post (command)
-        }
-    }
-
-    class ListDataSource (private val items: List<Movie>): PageKeyedDataSource<Int, Movie>() {
-        override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Movie>) {
-            callback.onResult (items, 0, items.size)
-        }
-
-        override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-
-        }
-
-        override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Movie>) {
-
-        }
-    }
 }

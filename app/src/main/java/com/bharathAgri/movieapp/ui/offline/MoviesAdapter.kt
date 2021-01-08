@@ -38,6 +38,7 @@ class MoviesAdapter( val context: Context,private var moviesList: List<Movie>) :
           val moviePosterURL = IMAGE_BASE_URL + movie?.poster_path
           Glide.with(itemView.context)
              .load(moviePosterURL)
+             .placeholder(R.drawable.ic_content_placeholder)
              .into(itemView.image_movie_poster)
 
           itemView.setOnClickListener{
@@ -52,6 +53,11 @@ class MoviesAdapter( val context: Context,private var moviesList: List<Movie>) :
 
    override fun getItemCount(): Int {
       return moviesList.size
+   }
+
+   fun sortedList(movies: List<Movie>) {
+      moviesList = movies;
+      notifyDataSetChanged()
    }
 
 }

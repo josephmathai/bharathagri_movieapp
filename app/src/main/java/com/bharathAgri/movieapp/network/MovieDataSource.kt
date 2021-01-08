@@ -103,6 +103,9 @@ class MovieDataSource(private val apiService : MovieRetroInterface, private  val
                     .subscribe(
                         {
                             if(it.totalPages >= params.key) {
+                                DatabaseClient.getInstance(context).getAppDatabase()
+                                    .movieDao()
+                                    .insertall(it.movieList)
                                 callback.onResult(it.movieList, params.key+1)
                                 networkState.postValue(NetworkState.LOADED)
                             }
@@ -123,6 +126,9 @@ class MovieDataSource(private val apiService : MovieRetroInterface, private  val
                     .subscribe(
                         {
                             if(it.totalPages >= params.key) {
+                                DatabaseClient.getInstance(context).getAppDatabase()
+                                    .movieDao()
+                                    .insertall(it.movieList)
                                 callback.onResult(it.movieList, params.key+1)
                                 networkState.postValue(NetworkState.LOADED)
                             }

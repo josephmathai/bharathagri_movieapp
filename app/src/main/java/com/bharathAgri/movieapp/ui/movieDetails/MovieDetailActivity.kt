@@ -69,6 +69,7 @@ class MovieDetailActivity : AppCompatActivity() {
         val moviePosterURL = IMAGE_BASE_URL + it.posterPath
         Glide.with(this)
             .load(moviePosterURL)
+            .placeholder(R.drawable.ic_content_placeholder)
             .into(iv_movie_poster);
 
     }

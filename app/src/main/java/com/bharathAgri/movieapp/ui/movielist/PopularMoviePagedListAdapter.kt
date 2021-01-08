@@ -84,6 +84,7 @@ class PopularMoviePagedListAdapter(public val context: Context) : PagedListAdapt
             val moviePosterURL = IMAGE_BASE_URL + movie?.poster_path
             Glide.with(itemView.context)
                 .load(moviePosterURL)
+                .placeholder(R.drawable.ic_content_placeholder)
                 .into(itemView.image_movie_poster)
 
             itemView.setOnClickListener{
